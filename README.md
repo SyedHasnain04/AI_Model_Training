@@ -98,7 +98,7 @@ pip install notebook
 ## 👨‍💻 Author
 
 **Your Name**
-GitHub: [https://github.com/your-username](https://github.com/Syed8855)
+GitHub: [https://github.com/Syed8855](https://github.com/Syed8855)
 
 ---
 
