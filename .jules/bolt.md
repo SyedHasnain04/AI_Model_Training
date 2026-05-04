@@ -1,0 +1,3 @@
+## 2024-06-25 - [O(1) Pixel Mapping LUT and Vectorized IoU Calculation]
+**Learning:** In PyTorch and Numpy based environments doing pixel-value-to-label mapping with boolean mask assignments (`arr == value`) is an O(N) operations executed multiple times. `torch.bincount` helps avoid looping over NUM_CLASSES during the intersection over union (IoU) calculation leading to massive speedups.
+**Action:** When performing pixel-value-to-label mapping, use a NumPy lookup table (LUT) mapped onto safe input bounds in O(1) time. Also avoid for loops iterating over classes in IoU functions, replacing them with a vectorized computation using a confusion matrix constructed via `torch.bincount`.
