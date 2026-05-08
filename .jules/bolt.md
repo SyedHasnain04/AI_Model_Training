@@ -1,0 +1,7 @@
+## 2024-05-08 - Optimized convert_mask and mean_iou using LUT and Vectorization
+**Learning:** In Jupyter notebook files handling semantic segmentation models with image mask conversion, mapping discrete pixel values using multiple boolean index assignments (e.g., `new_mask[arr==100]=1`) is a major performance bottleneck due to repeatedly iterating over large arrays. Additionally, calculating Intersection over Union (IoU) with a loop across all classes, performing boolean operations on tensors (e.g., `(pred==cls)&(mask==cls)`), is very inefficient compared to vectorized alternatives.
+**Action:** Always replace multiple discrete assignments with a cached NumPy Lookup Table (LUT) where `np.where` guarantees bound safety (`np.where((arr>=0) & (arr<=MAX), arr, 0)`), which avoids large array boolean masking. Similarly, replace naive IoU loops in PyTorch with vectorized confusion matrix computation via `torch.bincount`.
+
+## 2024-05-08 - Environment Constraints Preventing Empirical Benchmarking
+**Learning:** PyTorch and other large deep learning dependencies might not be pre-installed in the testing environment, causing ModuleNotFoundErrors when attempting to run verification scripts or pytest.
+**Action:** Acknowledge the constraint and rely on static verification of algorithmic complexity (O(N) to O(1) mappings, Vectorization) and manual review when empirical testing tools fail due to environment limitations.
