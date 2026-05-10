@@ -1,0 +1,3 @@
+## 2024-05-10 - Vectorized Operations for Segmentation Masks
+**Learning:** In segmentation tasks, repetitive boolean masking (e.g., `arr == val`) for mask conversion and iterative class-wise metrics (e.g., `(pred==cls) & (mask==cls)`) are significant CPU/GPU bottlenecks. These operations scale linearly with the number of classes (O(N*C)) and cause repeated memory accesses.
+**Action:** Replace sequential boolean assignments with a cached NumPy Lookup Table (LUT) for mask conversion (O(N)), ensuring bound safety with `np.where`. For IoU metrics, replace class-wise loops with a single `torch.bincount` to build a confusion matrix (O(N)), avoiding repeated tensor allocation and reducing the operation complexity independent of the number of classes.
