@@ -1,0 +1,3 @@
+## 2024-05-14 - Optimize segmentation metrics and mask loading
+**Learning:** In PyTorch, iteratively calculating IoU per class inside a loop (`for cls in range(NUM_CLASSES)`) can be a significant performance bottleneck when calculating metrics for semantic segmentation. Vectorizing the calculation using a confusion matrix built with `torch.bincount` is significantly faster on CPUs, avoiding slow synchronization. Similarly, for converting pixel values to labels, using a pre-allocated NumPy Look-Up Table (LUT) is much faster than running 10 boolean index assignments (`arr == value`).
+**Action:** Always use vectorized confusion matrix approaches for IoU calculations and cached LUTs for mask class mapping to improve CPU/GPU processing times.
