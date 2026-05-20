@@ -1,0 +1,3 @@
+## 2024-05-24 - NumPy Lookup Table (LUT) for Mask Conversion
+**Learning:** Sequential boolean mask assignments (e.g., `arr[arr==100]=1`) are significantly slower (4.4x) compared to using a cached NumPy lookup table (`lut[arr]`) for mapping sparse pixel values to dense labels in large segmentation masks. The optimization uses `np.where` for bound-safety and function attributes to cache the LUT.
+**Action:** Use NumPy LUTs cached as function attributes with `np.where` for bound safety instead of sequential boolean assignments when performing pixel-value-to-label mapping in masks to ensure high performance.
