@@ -1,0 +1,3 @@
+## 2024-05-18 - Optimized Pixel-to-Label Mask Conversion using Look-Up Table (LUT)
+**Learning:** In segmentation dataset loaders, repeated boolean mask assignments like `new_mask[arr==100]=1` for converting pixel values to labels are exceptionally slow due to multiple full-array scans per image.
+**Action:** Replace multiple boolean assignments with a cached NumPy look-up table (LUT) initialized on the function object (`hasattr(convert_mask, 'lut')`). Ensure bound safety with `np.where((arr >= 0) & (arr <= MAX_VAL), arr, 0)` before indexing the LUT to prevent `IndexError`s. This transforms an O(N * C) operation into an O(N) vectorized array lookup.
