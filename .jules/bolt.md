@@ -1,0 +1,3 @@
+## 2024-05-24 - [Optimize mask conversion using cached NumPy lookup table]
+**Learning:** For pixel-value-to-label mapping in masks, multiple boolean array assignments (e.g. `new_mask[arr==100]=1`) are significantly slower (O(N) operations per class) than using a NumPy lookup table (LUT). Additionally, when using a LUT, bound safety is critical to prevent `IndexError`s. Using `np.where((arr >= 0) & (arr <= MAX_VAL), arr, 0)` is safer than `np.clip`, which could incorrectly assign the max valid label to out-of-bounds pixels.
+**Action:** When performing pixel-to-class conversions (e.g. `convert_mask`), use a NumPy lookup table cached as a function attribute and ensure bound safety using `np.where` before indexing the LUT.
