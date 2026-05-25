@@ -1,0 +1,3 @@
+## 2024-06-25 - Jupyter Notebook Source Formatting
+**Learning:** When programmatically updating code inside Jupyter Notebooks (`.ipynb` files), the 'source' list requires each string (except possibly the last one) to end with a newline character (`\n`), otherwise code formatting breaks and can cause `SyntaxError`s when parsed or run. Also when writing back, `json.dump` requires `ensure_ascii=False` to prevent unicode escaping that creates noisy git diffs.
+**Action:** When creating Python scripts to patch Jupyter Notebooks, ensure replacement code is split by newline and explicitly appended with `\n` in a list comprehension before replacing the original source. Always write with `ensure_ascii=False`.
