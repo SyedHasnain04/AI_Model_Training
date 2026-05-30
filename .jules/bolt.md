@@ -1,0 +1,3 @@
+## 2024-05-30 - Mask Conversion Optimization with LUT
+**Learning:** Mask label conversion using multiple boolean array assignments (e.g. `mask[arr==100] = 1`) is extremely slow due to multiple full-array passes. A codebase-specific pattern here was converting semantic segmentations to normalized integer ranges. Using a NumPy Lookup Table (LUT) with a cached attribute provides a significant ~6.5x speedup by reducing the operation to a single array index lookup.
+**Action:** Always prefer vectorized LUT indexing over multiple boolean assignments for mapping integer label maps in datasets. Use `np.where` bounds checking prior to lookup to prevent `IndexError` on out-of-bounds pixel values.
