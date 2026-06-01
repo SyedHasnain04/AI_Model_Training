@@ -1,0 +1,3 @@
+## 2024-06-01 - Optimizing Multi-Class Mask Conversion with NumPy LUT
+**Learning:** In the Offroad Segmentation project, mapping pixel values to labels via sequential boolean masking (`new_mask[arr==100]=1`, etc.) scales linearly with the number of classes and performs full-array comparisons each time. This creates an I/O bottleneck when parsing masks.
+**Action:** When performing pixel-value-to-label mapping in masks, pre-compute a lookup table (LUT) mapping possible pixel values to output labels. Cache this LUT via `hasattr()` to avoid rebuilding it. To ensure memory safety, apply a bounds check (`np.where((arr >= 0) & (arr <= MAX_VAL), arr, 0)`) before vectorizing via `lut[arr]`. This shifts operation complexity from O(C*N) to O(N).
