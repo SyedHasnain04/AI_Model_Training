@@ -1,0 +1,3 @@
+## 2024-06-06 - Optimized convert_mask with LUT
+**Learning:** In Jupyter Notebooks processing images/masks for segmentation models, using multiple boolean masking assignments (`new_mask[arr==100] = 1`, etc.) is extremely slow because it requires a full pass over the array for each class. Using a pre-initialized Look-Up Table (LUT) mapped to the pixel values directly yields a ~5x performance improvement.
+**Action:** When performing pixel-value-to-label mapping in masks, use a NumPy lookup table (LUT) cached as a function attribute instead of multiple boolean mask assignments. Ensure bounds checking to avoid index errors by clipping out-of-bounds pixels using `np.where`.
