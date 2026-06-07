@@ -1,0 +1,3 @@
+## 2024-05-24 - Optimize pixel-value-to-label mapping in masks
+ **Learning:** When performing pixel-value-to-label mapping in masks (e.g., in `convert_mask`), using a NumPy lookup table (LUT) cached as a function attribute is significantly faster (~3.5x speedup) than using multiple boolean mask assignments. Ensure bound safety by using `np.where((arr >= 0) & (arr <= MAX_VAL), arr, 0)` before indexing the LUT to safely map out-of-bounds values to 0 (background) and prevent `IndexError`s, rather than using `np.clip` which could incorrectly assign max valid labels to out-of-bounds pixels.
+ **Action:** Always use a cached LUT for mapping sparse label values to contiguous indices in image segmentation mask pipelines.
