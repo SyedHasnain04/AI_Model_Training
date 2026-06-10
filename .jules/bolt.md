@@ -1,0 +1,3 @@
+## 2025-03-09 - Optimize semantic segmentation mask conversion
+**Learning:** Using multiple boolean mask assignments (`new_mask[arr==x] = y`) inside `__getitem__` is a huge performance bottleneck because it scans the image array $O(N)$ times for each class. Using `np.clip` before LUT indexing is dangerous because it could map valid background values outside the expected class range to incorrect labels.
+**Action:** When performing pixel-value-to-label mapping in masks, always use a NumPy lookup table (LUT) cached as a function attribute (to avoid recreating it each call) and use `np.where` instead of `np.clip` to safely handle out-of-bounds pixels (`np.where((arr >= 0) & (arr <= MAX_VAL), arr, 0)`).
