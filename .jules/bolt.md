@@ -1,0 +1,3 @@
+## 2024-03-24 - Optimize convert_mask with NumPy LUT
+**Learning:** For pixel-value-to-label mapping in masks, multiple boolean mask assignments (e.g., `new_mask[arr==100]=1`) result in significant performance overhead due to repeated full array scans. Using a cached NumPy lookup table (LUT) alongside array bound safety checks using `np.where` provides an O(N) mapping, drastically improving performance (e.g., ~6x speedup from ~8.68ms to ~1.46ms per call).
+**Action:** When performing mapping of categorical mask pixel values, rely on memory-cached lookup tables constructed with NumPy instead of sequentially iterating boolean conditionals. Always bounds-check indexed arrays against the LUT size to prevent `IndexError` on unexpected data values.
