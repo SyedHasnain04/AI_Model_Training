@@ -1,0 +1,3 @@
+## 2024-05-24 - Efficient Pixel Mapping with NumPy LUT
+**Learning:** Using repeated boolean mask assignments (`new_mask[arr==100] = 1`) for pixel-value-to-label mapping in masks is extremely slow due to the O(N) operations required for each label iteration.
+**Action:** When performing pixel-value-to-label mapping in masks, use a NumPy lookup table (LUT) cached as a function attribute (e.g., `if not hasattr(func, 'lut')`) instead of multiple boolean mask assignments for better performance. Ensure bound safety by using `np.where((arr >= 0) & (arr <= MAX_VAL), arr, 0)` before indexing the LUT to safely map out-of-bounds values to 0 (background) and prevent `IndexError`s.
